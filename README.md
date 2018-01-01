@@ -10,16 +10,19 @@ to roxygen2 format.
 
 ## Example input/output
 
-Input:
+Input (part of file):
 
-    # Add together two numbers
-    #
-    # Args:
-    #.  x: A number
-    #.  y: A number
-    #
-    # Returns:
-    #.  The sum of x and y
+    fun <- function(x, y) {
+        # Add together two numbers
+        #
+        # Args:
+        #   x: A number
+        #   y: A number
+        #
+        # Returns:
+        #   The sum of x and y
+        x+y
+    }
 
 Output:
 
@@ -30,6 +33,9 @@ Output:
     #' @param y: A number
     #'
     #' @return The sum of x and y
+    fun <- function(x, y) {
+        x+y
+    }
 
 ## Usage
 
