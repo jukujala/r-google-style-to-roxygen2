@@ -43,3 +43,7 @@ Output:
 Feel free to report bugs to my email given at github page.
 Tell also if there is a better way to do the transformation, the current state
 machine logic feels too complicated.
+
+## Status of this software
+
+This is just something I quickly wrote, so do not expect it to work well ;)
