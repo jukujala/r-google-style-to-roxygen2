@@ -29,7 +29,7 @@ lineEmpty <- function(line) {
   # return TRUE if line is empty after trimming
   #
   # Args:
-  #.  line: string
+  #   line: string
   #
   # Returns:
   #   TRUE if line is empty
@@ -37,27 +37,27 @@ lineEmpty <- function(line) {
 }
 
 lineStartsWith <- function(line, char) {
-    # return TRUE if line starts with char
-    #
-    # Args:
-    #.  line: string
-    #.  char: single character
-    #
-    # Returns:
-    #   TRUE if line begins with char after trimming
-    stopifnot(nchar(char) == 1)
-    line <- trimws(line, which="left")
-    if(substr(line, 1, 1) == char) {TRUE} else {FALSE} 
+  # return TRUE if line starts with char
+  #
+  # Args:
+  #   line: string
+  #   char: single character
+  #
+  # Returns:
+  #   TRUE if line begins with char after trimming
+  stopifnot(nchar(char) == 1)
+  line <- trimws(line, which="left")
+  if(substr(line, 1, 1) == char) {TRUE} else {FALSE} 
 }
 
 printLines <- function(lines) {
   # print all lines in input
   #
   # Args:
-  #.  lines: list of strings
+  #  lines: list of strings
   #
   # Returns:
-  #.  TRUE
+  #   TRUE
   lapply(lines, catnl)
   return(TRUE)
 }
@@ -66,11 +66,11 @@ roxygenesis <- function(line, add=NULL) {
   # Transform eg "# foo" to "#' foo"
   #
   # Etymology:
-  #.  This is a genesis for function documentation.
+  #   This is a genesis for function documentation.
   #
   # Args:
-  #.  line: function document line, begins with # always
-  #.  add: add this part after "#' "
+  #   line: function document line, begins with # always
+  #   add: add this part after "#' "
   #
   # Returns:
   #   transform to roxygen style
@@ -80,25 +80,25 @@ roxygenesis <- function(line, add=NULL) {
   if(!is.null(add)) {
     line_start <- paste0("#' ", add, " ")
   }
-  gsub("^#[#][[:blank:]]*", line_start, line)
+  gsub("^#(#){0,1}[[:blank:]]*", line_start, line)
 }
 
 labelFunDocLine <- function(line) {
   # give label such as "args" to a line
   #
   # Args:
-  #.  line: new line
+  #   line: new line
   #
   # Returns:
-  #.  label in set (args, arg_name, returns, other)
+  #   label in set (args, arg_name, returns, other)
 
   # remove white spaces from the start of line
   line <- trimws(line, which="left")
-  has_args <- grepl("^[#]*[[:blank:]]*Args:[[:blank:]]*", line)
-  has_returns <- grepl("^[#]*[[:blank:]]*Returns:[[:blank:]]*", line)
+  has_args <- grepl("^#*[[:blank:]]*Args:[[:blank:]]*", line)
+  has_returns <- grepl("^#*[[:blank:]]*Returns:[[:blank:]]*", line)
   # support only function arguments up to 50 characters
   has_argument_name <- (
-    grepl("^[#]*[[:blank:]]*(\\w|\\.){1,50}:[[:blank:]]*", line)
+    grepl("^#*[[:blank:]]*(\\w|\\.|_){1,50}:[[:blank:]]*", line)
   )
   if(has_returns) {
     return("returns")
@@ -116,11 +116,11 @@ labelAllFunDocLines <- function(fun_doc) {
   # label each line in function documentation
   #
   # Logic:
-  #.  1) Give label (args, arg_name, returns, other) to each line independently
-  #.  2) Relabel line after returns to return_body
+  #   1) Give label (args, arg_name, returns, other) to each line independently
+  #   2) Relabel line after returns to return_body
   #
   # Returns:
-  #.  label for each line from set (other, args, arg_name, returns, return_body)
+  #   label for each line from set (other, args, arg_name, returns, return_body)
   labels <- lapply(fun_doc, labelFunDocLine)
   stopifnot(length(labels) == length(fun_doc))
   # mark the line after returns
@@ -137,8 +137,8 @@ transformFunDocLine <- function(line, label) {
   # Transform function document line
   #
   # Args:
-  #.  line: function document line
-  #.  label: one of (other, args, arg_name, returns, return_body)
+  #   line: function document line
+  #   label: one of (other, args, arg_name, returns, return_body)
 
   # remove "Args:" and "Returns:" lines
   out <- NULL
@@ -159,11 +159,11 @@ transformFunDoc <- function(fun_doc, add_export=FALSE) {
   # See above for examples.
   #
   # Args:
-  #.  fun_doc: list of function document lines
-  #.  add_export: if TRUE then add @export
+  #   fun_doc: list of function document lines
+  #   add_export: if TRUE then add @export
   #
   # Returns:
-  #.  List of transformed function document lines.
+  #   List of transformed function document lines.
 
   # label all lines
   labels <- labelAllFunDocLines(fun_doc)
@@ -179,8 +179,8 @@ printTransformedLines <- function(lines, add_export=FALSE) {
   # transform lines to roxygen2 document format and print them
   #
   # Args:
-  #.  lines: vector of code string lines
-  #.  add_export: if TRUE then add @export to each function document
+  #   lines: vector of code string lines
+  #   add_export: if TRUE then add @export to each function document
 
   # Logic:
   # step A: print lines until "function" keyword is found
@@ -198,7 +198,7 @@ printTransformedLines <- function(lines, add_export=FALSE) {
     line <- lines[[i]]
     if(state == "find function") {
       # print lines until "function" keyword is found
-      if(grepl("function", line)) {
+      if(grepl("function(", line, fixed=TRUE)) {
         state <- "find {"
       } else {
          catnl(line)
