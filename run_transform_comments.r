@@ -22,6 +22,6 @@ if(!file.exists(fn)) {
   q(save="no")
 }
 lines <- readLines(fn)
-x <- printTransformedLines(lines)
+x <- printTransformedLines(lines, add_export=TRUE)
 # you can debug with this:
 #x <- capture.output(printTransformedLines(lines, add_export=TRUE))
