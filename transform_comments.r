@@ -84,10 +84,10 @@ roxygenesis <- function(line, add=NULL) {
 }
 
 labelFunDocLine <- function(line) {
-  # give label such as "args" to a line
+  # give label such as "args" to a line of function documentation
   #
   # Args:
-  #   line: new line
+  #   line: Google R style guide function document line
   #
   # Returns:
   #   label in set (args, arg_name, returns, other)
@@ -119,6 +119,9 @@ labelAllFunDocLines <- function(fun_doc) {
   #   1) Give label (args, arg_name, returns, other) to each line independently
   #   2) Relabel line after returns to return_body
   #
+  # Args:
+  #   fun_doc: list of function documentation lines
+  #
   # Returns:
   #   label for each line from set (other, args, arg_name, returns, return_body)
   labels <- lapply(fun_doc, labelFunDocLine)
@@ -139,6 +142,10 @@ transformFunDocLine <- function(line, label) {
   # Args:
   #   line: function document line
   #   label: one of (other, args, arg_name, returns, return_body)
+  #
+  # Returns:
+  #   Transformed function document line.
+  #   eg "   # foo" -> "#' foo"
 
   # remove "Args:" and "Returns:" lines
   out <- NULL
@@ -181,6 +188,9 @@ printTransformedLines <- function(lines, add_export=FALSE) {
   # Args:
   #   lines: vector of code string lines
   #   add_export: if TRUE then add @export to each function document
+  #
+  # Returns:
+  #   TRUE, prints to stdout
 
   # Logic:
   # step A: print lines until "function" keyword is found
