@@ -41,7 +41,7 @@ Output:
 
     git clone https://github.com/jukujala/r-google-style-to-roxygen2.git
     cd r-google-style-to-roxygen2/
-    Rscript run_run_transform_comments.r my_file.r
+    ./run_transform_comments.sh -i my_file.r
     # prints to stdout
 
 ## Feedback
